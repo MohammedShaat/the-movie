@@ -1,4 +1,4 @@
-package com.example.themovie.ui.theme
+package com.example.themovie.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -19,7 +19,8 @@ private val DarkColorScheme = darkColorScheme(
     primary = CandyAppleRed,
     secondary = Yellow,
     background = DarkGunmetal,
-    onBackground = Onyx,
+    onBackground = White,
+    surface = Onyx,
 )
 
 //private val LightColorScheme = lightColorScheme(
