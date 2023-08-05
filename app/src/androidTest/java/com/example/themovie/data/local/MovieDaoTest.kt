@@ -50,11 +50,11 @@ class MovieDaoTest {
     }
 
     @Test
-    fun upsertMovies_moviesList_insertsMovies(): Unit = runBlocking {
+    fun pagingSource_moviesList_insertsMovies(): Unit = runBlocking {
         movieDao.upsertMovies(movies)
 
         // Assert that movies are inserted
-        val pagingSource = movieDao.getMovies()
+        val pagingSource = movieDao.pagingSource()
         val loadResult = pagingSource.load(
             PagingSource.LoadParams.Refresh(null, loadSize = 20, placeholdersEnabled = false)
         ) as LoadResult.Page
@@ -67,7 +67,7 @@ class MovieDaoTest {
         // Insert movies
         movieDao.upsertMovies(movies)
         // Assert that movies are inserted
-        val pagingSource = movieDao.getMovies()
+        val pagingSource = movieDao.pagingSource()
         var loadResult = pagingSource.load(
             PagingSource.LoadParams.Refresh(null, loadSize = 20, placeholdersEnabled = false)
         )

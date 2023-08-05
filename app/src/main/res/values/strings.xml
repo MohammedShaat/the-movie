@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">The Movie</string>
+    <string name="cd_for_adults">Adults Only</string>
 </resources>
