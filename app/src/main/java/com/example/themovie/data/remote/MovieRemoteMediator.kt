@@ -1,5 +1,6 @@
 package com.example.themovie.data.remote
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -9,6 +10,7 @@ import com.example.themovie.data.local.MovieEntity
 import com.example.themovie.data.local.RemoteKeyEntity
 import com.example.themovie.data.local.TheMovieDatabase
 import com.example.themovie.data.mapper.toMovieEntity
+import com.example.themovie.util.Constants.GLOBAL_TAG
 import com.example.themovie.util.MoviesListType
 import retrofit2.HttpException
 import java.io.IOException
@@ -40,21 +42,23 @@ class MovieRemoteMediator(
                 MoviesListType.TOP_RATED -> api.getTopRatedMovies(key)
                 MoviesListType.UPCOMING -> api.getUpcomingMovies(key)
             }
-            val remoteMovies = response.results.map { it.toMovieEntity() }
+            val movies = response.results.map { it.toMovieEntity() }
 
             db.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     movieDao.clearAll()
                 }
-                movieDao.upsertMovies(remoteMovies)
+                movieDao.upsertMovies(movies)
                 remoteKeyDao.clearAll()
                 remoteKeyDao.upsertRemoteKey(RemoteKeyEntity(response.page + 1))
             }
 
             MediatorResult.Success(response.page >= response.totalPages)
         } catch (e: HttpException) {
+            Log.e(GLOBAL_TAG, "Mediator:: HttpException=$e")
             MediatorResult.Error(e)
         } catch (e: IOException) {
+            Log.e(GLOBAL_TAG, "Mediator:: IOException=$e")
             MediatorResult.Error(e)
         }
     }

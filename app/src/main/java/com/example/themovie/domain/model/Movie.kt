@@ -6,7 +6,7 @@ import java.util.Date
 data class Movie(
     val adult: Boolean,
     val id: Int,
-    val posterUrl: String,
+    val posterUrl: String?,
     val title: String,
     val voteAverage: Double,
 )

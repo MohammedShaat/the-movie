@@ -17,12 +17,11 @@ fun MovieDto.toMovieEntity(): MovieEntity {
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun MovieEntity.toMovie(): Movie {
     return Movie(
         adult = adult,
         id = id,
-        posterUrl = "$IMAGE_BASE_URL$posterPath",
+        posterUrl = posterPath?.let { "$IMAGE_BASE_URL$posterPath" },
         title = title,
         voteAverage = voteAverage,
     )
