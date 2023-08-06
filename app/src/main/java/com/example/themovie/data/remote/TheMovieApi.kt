@@ -9,23 +9,29 @@ import retrofit2.http.Query
 
 interface TheMovieApi {
 
-    @GET("now_playing?language=en-US")
+    @GET("movie/now_playing?language=en-US")
     suspend fun getNowPlayingMovies(
         @Query("page") page: Int
     ): MoviesListResponse
 
-    @GET("popular?language=en-US")
+    @GET("movie/popular?language=en-US")
     suspend fun getPopularMovies(
         @Query("page") page: Int
     ): MoviesListResponse
 
-    @GET("top_rated?language=en-US")
+    @GET("movie/top_rated?language=en-US")
     suspend fun getTopRatedMovies(
         @Query("page") page: Int
     ): MoviesListResponse
 
-    @GET("upcoming?language=en-US")
+    @GET("movie/upcoming?language=en-US")
     suspend fun getUpcomingMovies(
+        @Query("page") page: Int
+    ): MoviesListResponse
+
+    @GET("search/movie?language=en-US&include_adult=true")
+    suspend fun search(
+        @Query("query") query: String,
         @Query("page") page: Int
     ): MoviesListResponse
 

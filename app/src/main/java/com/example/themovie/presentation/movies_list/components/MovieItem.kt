@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,12 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -38,11 +40,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.example.themovie.R
 import com.example.themovie.domain.model.Movie
-import com.example.themovie.presentation.common.DefaultPreview
 import com.example.themovie.presentation.ui.theme.TheMovieTheme
 import com.example.themovie.util.DummyObjects
 
@@ -51,7 +53,7 @@ fun MovieItem(
     movie: Movie,
     modifier: Modifier = Modifier
 ) {
-    var isPosterLoading by remember { mutableStateOf(true) }
+    var isPosterLoading by remember { mutableStateOf(false) }
 
     Card(
         modifier = modifier
@@ -62,27 +64,29 @@ fun MovieItem(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surface,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(160.dp)
+                    .height(180.dp),
             ) {
-                Surface(
-                    shape = MaterialTheme.shapes.medium,
-                    color = MaterialTheme.colorScheme.surface
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     AsyncImage(
                         model = movie.posterUrl,
                         contentDescription = null,
-                        onLoading = { isPosterLoading = true },
-                        onSuccess = { isPosterLoading = false },
+                        onState = { state ->
+                            isPosterLoading = state is AsyncImagePainter.State.Loading
+                        },
                         contentScale = ContentScale.FillBounds,
                         modifier = Modifier.fillMaxSize(),
                     )
-                }
-                if (isPosterLoading) {
-                    CircularProgressIndicator()
+                    if (isPosterLoading) {
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(15.dp))
@@ -90,12 +94,13 @@ fun MovieItem(
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleMedium,
-                maxLines = 2,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -111,7 +116,10 @@ fun MovieItem(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    Text(text = movie.voteAverage.toString())
+                    Text(
+                        text = movie.voteAverage.toString(),
+                        color = MaterialTheme.colorScheme.primary
+                    )
                 }
 
                 if (movie.adult) {
@@ -122,7 +130,6 @@ fun MovieItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
@@ -130,8 +137,8 @@ fun MovieItem(
 @Preview(
     showBackground = true,
     backgroundColor = 0xff22222c,
-    widthDp = 200,
-    heightDp = 400
+    widthDp = 170,
+    heightDp = 304
 )
 @Composable
 fun MovieItemPreview() {

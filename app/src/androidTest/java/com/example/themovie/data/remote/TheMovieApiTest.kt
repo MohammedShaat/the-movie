@@ -29,7 +29,7 @@ class TheMovieApiTest {
     }
 
     @Test
-    fun getNowPlayingMovies_returnsMoviesList(): Unit = runBlocking {
+    fun getNowPlayingMovies_page_returnsMoviesList(): Unit = runBlocking {
         val response = api.getNowPlayingMovies(1)
 
         // Assert that there are movies
@@ -37,7 +37,7 @@ class TheMovieApiTest {
     }
 
     @Test
-    fun getPopularMovies_returnsMoviesList(): Unit = runBlocking {
+    fun getPopularMovies_page_returnsMoviesList(): Unit = runBlocking {
         val response = api.getPopularMovies(1)
 
         // Assert that there are movies
@@ -45,7 +45,7 @@ class TheMovieApiTest {
     }
 
     @Test
-    fun getTopRatedMovies_returnsMoviesList(): Unit = runBlocking {
+    fun getTopRatedMovies_page_returnsMoviesList(): Unit = runBlocking {
         val response = api.getTopRatedMovies(1)
 
         // Assert that there are movies
@@ -53,8 +53,16 @@ class TheMovieApiTest {
     }
 
     @Test
-    fun getUpcomingMovies_returnsMoviesList(): Unit = runBlocking {
+    fun getUpcomingMovies_page_returnsMoviesList(): Unit = runBlocking {
         val response = api.getUpcomingMovies(1)
+
+        // Assert that there are movies
+        assertThat(response.results, not(empty()))
+    }
+
+    @Test
+    fun search_queryAndPage_returnsMoviesList(): Unit = runBlocking {
+        val response = api.search("spider", 1)
 
         // Assert that there are movies
         assertThat(response.results, not(empty()))

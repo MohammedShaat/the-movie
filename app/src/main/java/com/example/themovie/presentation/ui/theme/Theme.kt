@@ -21,6 +21,7 @@ private val DarkColorScheme = darkColorScheme(
     background = DarkGunmetal,
     onBackground = White,
     surface = Onyx,
+    onSurface = White,
 )
 
 //private val LightColorScheme = lightColorScheme(

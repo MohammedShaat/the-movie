@@ -11,7 +11,7 @@ import com.example.themovie.data.remote.MovieRemoteMediator
 import com.example.themovie.data.remote.TheMovieApi
 import com.example.themovie.domain.model.Movie
 import com.example.themovie.domain.repository.MovieRepository
-import com.example.themovie.util.MoviesListType
+import com.example.themovie.util.MoviesFilter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -25,10 +25,10 @@ class MovieRepositoryImpl @Inject constructor(
     private val movieDao = db.movieDao
     private val remoteKeDao = db.remoteKeyDao
 
-    override fun getMovies(moviesListType: MoviesListType): Flow<PagingData<Movie>> {
+    override fun getMovies(moviesFilter: MoviesFilter, query: String): Flow<PagingData<Movie>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = MovieRemoteMediator(db, api, moviesListType),
+            remoteMediator = MovieRemoteMediator(db, api, moviesFilter, query),
             pagingSourceFactory = { movieDao.pagingSource() }
         )
             .flow

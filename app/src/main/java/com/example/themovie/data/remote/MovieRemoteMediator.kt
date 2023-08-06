@@ -11,7 +11,8 @@ import com.example.themovie.data.local.RemoteKeyEntity
 import com.example.themovie.data.local.TheMovieDatabase
 import com.example.themovie.data.mapper.toMovieEntity
 import com.example.themovie.util.Constants.GLOBAL_TAG
-import com.example.themovie.util.MoviesListType
+import com.example.themovie.util.MoviesFilter
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -19,7 +20,8 @@ import java.io.IOException
 class MovieRemoteMediator(
     private val db: TheMovieDatabase,
     private val api: TheMovieApi,
-    private val moviesListType: MoviesListType
+    private val moviesFilter: MoviesFilter,
+    private val query: String,
 ) : RemoteMediator<Int, MovieEntity>() {
 
     private val remoteKeyDao = db.remoteKeyDao
@@ -36,11 +38,12 @@ class MovieRemoteMediator(
                 LoadType.APPEND -> remoteKeyDao.getRemoteKey().nextKey
             }
 
-            val response = when (moviesListType) {
-                MoviesListType.NOW_PLAYING -> api.getNowPlayingMovies(key)
-                MoviesListType.POPULAR -> api.getPopularMovies(key)
-                MoviesListType.TOP_RATED -> api.getTopRatedMovies(key)
-                MoviesListType.UPCOMING -> api.getUpcomingMovies(key)
+            val response = when (moviesFilter) {
+                MoviesFilter.NOW_PLAYING -> api.getNowPlayingMovies(key)
+                MoviesFilter.POPULAR -> api.getPopularMovies(key)
+                MoviesFilter.TOP_RATED -> api.getTopRatedMovies(key)
+                MoviesFilter.UPCOMING -> api.getUpcomingMovies(key)
+                MoviesFilter.SEARCH -> api.search(query, key)
             }
             val movies = response.results.map { it.toMovieEntity() }
 
