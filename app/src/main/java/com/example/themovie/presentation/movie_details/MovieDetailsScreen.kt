@@ -1,6 +1,10 @@
 package com.example.themovie.presentation.movie_details
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,10 +33,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImagePainter
@@ -45,7 +52,6 @@ import com.example.themovie.presentation.movie_details.components.MovieDetailsTo
 import com.example.themovie.presentation.ui.theme.TheMovieTheme
 import com.example.themovie.util.format
 import com.google.accompanist.flowlayout.FlowRow
-import java.io.IOException
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -121,11 +127,18 @@ fun MovieDetailsScreen(
                             Spacer(modifier = Modifier.width(16.dp))
 
                             // Title
+                            val uriHandler = LocalUriHandler.current
+                            val titleClickable by remember { mutableStateOf(movieDetails.homepage.isNotBlank()) }
                             Text(
                                 text = movieDetails.title,
                                 style = MaterialTheme.typography.titleLarge.copy(
-                                    color = MaterialTheme.colorScheme.onBackground
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    textDecoration = if (titleClickable) TextDecoration.Underline else TextDecoration.None
                                 ),
+                                modifier = Modifier
+                                    .clickable(enabled = titleClickable) {
+                                        uriHandler.openUri(movieDetails.homepage)
+                                    }
                             )
                         }
                     }//Backdrop, poster & title
@@ -210,8 +223,9 @@ fun MovieDetailsScreen(
                     }
                     Spacer(modifier = Modifier.height(24.dp))
 
-
                     // Overview
+                    var maxLines by remember { mutableStateOf(4) }
+                    var overflowVisible by remember { mutableStateOf(false) }
                     Text(
                         text = stringResource(R.string.overview),
                         style = MaterialTheme.typography.headlineSmall,
@@ -221,10 +235,26 @@ fun MovieDetailsScreen(
                     Text(
                         text = movieDetails.overview,
                         style = MaterialTheme.typography.bodyLarge,
+                        maxLines = maxLines,
+                        overflow = TextOverflow.Ellipsis,
+                        onTextLayout = { overflowVisible = it.hasVisualOverflow },
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth()
                     )
+                    if (overflowVisible || maxLines == Int.MAX_VALUE) {
+                        Text(
+                            text = if (overflowVisible) stringResource(R.string.read_more)
+                            else stringResource(R.string.show_less),
+                            color = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .clickable {
+                                    maxLines = if (maxLines == 4) Int.MAX_VALUE else 4
+                                }
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }// Movie details
 
