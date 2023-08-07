@@ -13,7 +13,9 @@ object Constants {
 
     const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original"
 
-    const val DATE_PATTERN = "yy-M-d"
+    const val DATE_PATTERN = "yyyy-MM-dd"
 
     const val GLOBAL_TAG = "GlobalTag"
+
+    const val ARG_MOVIE_ID = "movie_id"
 }

@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.themovie.R
+import com.example.themovie.domain.model.Movie
 import com.example.themovie.presentation.movies_list.components.FAB
 import com.example.themovie.presentation.movies_list.components.MovieItem
 import com.example.themovie.presentation.movies_list.components.MoviesFilterList
@@ -40,6 +41,7 @@ import java.io.IOException
 
 @Composable
 fun MoviesListScreen(
+    onMovieClicked: (Movie) -> Unit,
     viewModel: MoviesListViewModel = hiltViewModel()
 ) {
     val movies = viewModel.movies.collectAsLazyPagingItems()
@@ -76,7 +78,7 @@ fun MoviesListScreen(
                 items(count = movies.itemCount, key = { movies[it]?.id ?: it }) { index ->
                     val movie = movies[index]
                     if (movie != null) {
-                        MovieItem(movie = movie)
+                        MovieItem(movie = movie, onClick = onMovieClicked)
                     }
                 }
 

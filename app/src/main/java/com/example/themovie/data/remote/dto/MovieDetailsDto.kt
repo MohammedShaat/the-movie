@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class MovieDetailsDto(
     @field:Json(name = "adult") val adult: Boolean,
-    @field:Json(name = "backdrop_path") val backdropPath: String,
+    @field:Json(name = "backdrop_path") val backdropPath: String?,
     @field:Json(name = "belongs_to_collection") val belongsToCollection: Any?,
     @field:Json(name = "budget") val budget: Int,
     @field:Json(name = "genres") val genres: List<Genre>,
@@ -16,7 +16,7 @@ data class MovieDetailsDto(
     @field:Json(name = "original_title") val originalTitle: String,
     @field:Json(name = "overview") val overview: String,
     @field:Json(name = "popularity") val popularity: Double,
-    @field:Json(name = "poster_path") val posterPath: String,
+    @field:Json(name = "poster_path") val posterPath: String?,
     @field:Json(name = "production_companies") val productionCompanies: List<ProductionCompany>,
     @field:Json(name = "production_countries") val productionCountries: List<ProductionCountry>,
     @field:Json(name = "release_date") val releaseDate: String,

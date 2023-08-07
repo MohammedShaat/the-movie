@@ -1,6 +1,7 @@
 package com.example.themovie.presentation.movies_list.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,7 @@ import com.example.themovie.util.DummyObjects
 @Composable
 fun MovieItem(
     movie: Movie,
+    onClick: (Movie) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var isPosterLoading by remember { mutableStateOf(false) }
@@ -59,6 +61,7 @@ fun MovieItem(
         modifier = modifier
             .fillMaxWidth()
             .height(280.dp)
+            .clickable { onClick(movie) }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -117,7 +120,7 @@ fun MovieItem(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = movie.voteAverage.toString(),
+                        text = stringResource(R.string.movie_vote_avg, movie.voteAverage),
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -145,6 +148,7 @@ fun MovieItemPreview() {
     TheMovieTheme {
         MovieItem(
             movie = DummyObjects.movie,
+            onClick = {},
             modifier = Modifier.padding(16.dp)
         )
     }

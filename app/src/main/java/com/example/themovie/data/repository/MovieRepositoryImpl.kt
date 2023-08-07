@@ -7,13 +7,19 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.themovie.data.local.TheMovieDatabase
 import com.example.themovie.data.mapper.toMovie
+import com.example.themovie.data.mapper.toMovieDetails
 import com.example.themovie.data.remote.MovieRemoteMediator
 import com.example.themovie.data.remote.TheMovieApi
 import com.example.themovie.domain.model.Movie
+import com.example.themovie.domain.model.MovieDetails
 import com.example.themovie.domain.repository.MovieRepository
 import com.example.themovie.util.MoviesFilter
+import com.example.themovie.util.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -39,7 +45,18 @@ class MovieRepositoryImpl @Inject constructor(
             }
     }
 
-//    override fun getMovieDetails(id: Int): Flow<Resource<MovieDetails>> {
-//        TODO("Not yet implemented")
-//    }
+    override fun getMovieDetails(id: Int): Flow<Resource<MovieDetails>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val movieDetails = api.getMovieDetails(id).toMovieDetails()
+            emit(Resource.Success(movieDetails))
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emit(Resource.Error(e))
+        } catch (e: IOException) {
+            e.printStackTrace()
+            emit(Resource.Error(e))
+        }
+    }
 }

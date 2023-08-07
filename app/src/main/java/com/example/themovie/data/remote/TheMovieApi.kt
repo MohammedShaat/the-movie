@@ -35,7 +35,7 @@ interface TheMovieApi {
         @Query("page") page: Int
     ): MoviesListResponse
 
-    @GET("{id}?language=en-US")
+    @GET("movie/{id}?language=en-US")
     suspend fun getMovieDetails(
         @Path("id") id: Int
     ): MovieDetailsDto

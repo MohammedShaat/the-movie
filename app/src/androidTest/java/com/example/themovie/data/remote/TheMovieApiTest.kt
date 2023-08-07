@@ -5,6 +5,7 @@ import androidx.test.filters.SmallTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.empty
@@ -66,5 +67,14 @@ class TheMovieApiTest {
 
         // Assert that there are movies
         assertThat(response.results, not(empty()))
+    }
+
+    @Test
+    fun getMovieDetails_id_returnsMoviesList(): Unit = runBlocking {
+        val id = 346698
+        val response = api.getMovieDetails(id)
+
+        // Assert that movie details are fetched
+        assertThat(response.id, equalTo(id))
     }
 }
