@@ -1,8 +1,10 @@
 package com.example.themovie.util
 
-import com.example.themovie.data.remote.dto.Genre
+import com.example.themovie.data.remote.dto.sub.GenreDto
 import com.example.themovie.domain.model.Movie
 import com.example.themovie.domain.model.MovieDetails
+import com.example.themovie.domain.model.sub.Backdrop
+import com.example.themovie.domain.model.sub.Genre
 
 object DummyObjects {
 
@@ -40,5 +42,9 @@ object DummyObjects {
         status = "Released",
         title = "Spider Man No Way Home",
         voteAverage = 7.497,
+    )
+
+    val backdrop = Backdrop(
+        url = ""
     )
 }

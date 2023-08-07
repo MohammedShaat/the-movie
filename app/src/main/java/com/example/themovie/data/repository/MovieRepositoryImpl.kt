@@ -12,7 +12,9 @@ import com.example.themovie.data.remote.MovieRemoteMediator
 import com.example.themovie.data.remote.TheMovieApi
 import com.example.themovie.domain.model.Movie
 import com.example.themovie.domain.model.MovieDetails
+import com.example.themovie.domain.model.MovieImages
 import com.example.themovie.domain.repository.MovieRepository
+import com.example.themovie.data.mapper.toMovieImages
 import com.example.themovie.util.MoviesFilter
 import com.example.themovie.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -51,6 +53,21 @@ class MovieRepositoryImpl @Inject constructor(
         try {
             val movieDetails = api.getMovieDetails(id).toMovieDetails()
             emit(Resource.Success(movieDetails))
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            emit(Resource.Error(e))
+        } catch (e: IOException) {
+            e.printStackTrace()
+            emit(Resource.Error(e))
+        }
+    }
+
+    override fun getMovieImages(id: Int): Flow<Resource<MovieImages>> = flow {
+        emit(Resource.Loading())
+
+        try {
+            val movieImages = api.getMovieImages(id).toMovieImages()
+            emit(Resource.Success(movieImages))
         } catch (e: HttpException) {
             e.printStackTrace()
             emit(Resource.Error(e))

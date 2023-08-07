@@ -1,9 +1,9 @@
 package com.example.themovie.data.remote
 
 import com.example.themovie.data.remote.dto.MovieDetailsDto
+import com.example.themovie.data.remote.dto.MovieImagesDto
 import com.example.themovie.data.remote.dto.MoviesListResponse
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -39,4 +39,9 @@ interface TheMovieApi {
     suspend fun getMovieDetails(
         @Path("id") id: Int
     ): MovieDetailsDto
+
+    @GET("movie/{id}/images")
+    suspend fun getMovieImages(
+        @Path("id") id: Int
+    ): MovieImagesDto
 }

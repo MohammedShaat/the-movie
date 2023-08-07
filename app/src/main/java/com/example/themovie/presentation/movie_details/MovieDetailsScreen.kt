@@ -1,14 +1,12 @@
 package com.example.themovie.presentation.movie_details
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -34,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,14 +41,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImagePainter
 import com.example.themovie.R
 import com.example.themovie.presentation.common.FullScreenPreview
 import com.example.themovie.presentation.common.components.AsyncImageWithProgressIndicator
 import com.example.themovie.presentation.common.components.NetworkMessage
 import com.example.themovie.presentation.movie_details.components.GenreItem
+import com.example.themovie.presentation.movie_details.components.MovieBackdropItem
 import com.example.themovie.presentation.movie_details.components.MovieDetailsTopAppBar
 import com.example.themovie.presentation.ui.theme.TheMovieTheme
+import com.example.themovie.util.Resource
 import com.example.themovie.util.format
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -57,30 +59,35 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun MovieDetailsScreen(
     onNavigateUpClicked: () -> Unit,
-    viewModel: MoveDetailsViewModel = hiltViewModel()
+    viewModel: MovieDetailsViewModel = hiltViewModel()
 //    movieDetails: MovieDetails = DummyObjects.movieDetails,
 ) {
-    val movieDetails = viewModel.movieDetails
+    val movieDetailsLoadState by viewModel.movieDetailsFlow.collectAsStateWithLifecycle(Resource.Loading())
+    val movieDetails = movieDetailsLoadState.data
+    val movieImagesLoadState by viewModel.movieImagesFlow.collectAsStateWithLifecycle(Resource.Loading())
+    val movieImages = movieImagesLoadState.data
+
     var backdropLoading by remember { mutableStateOf(false) }
     var posterLoading by remember { mutableStateOf(false) }
+
 
     Column(modifier = Modifier.fillMaxSize()) {
         // TopAppBar
         MovieDetailsTopAppBar(onNavigateUpClicked = onNavigateUpClicked)
 
-        // Movie details & handling load state
+        // Movie details, movie images & handling their load state
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            // Movie details
-            movieDetails?.let {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                ) {
-
+            // Movie details & movie images
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                // Movie details
+                movieDetails?.let {
                     // Backdrop, poster & title
                     Box(
                         modifier = Modifier.fillMaxWidth()
@@ -255,16 +262,30 @@ fun MovieDetailsScreen(
                         )
                     }
                     Spacer(modifier = Modifier.height(24.dp))
-                }
-            }// Movie details
+                }// Movie details
 
 
-            // Handling load state
-            if (viewModel.loading) {
+                // Movie images
+                movieImages?.let {
+                    LazyRow(
+                        contentPadding = PaddingValues(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(movieImages.backdrops) { backdrop ->
+                            MovieBackdropItem(backdrop = backdrop)
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(24.dp))
+                }// Movie images
+            }
+
+
+            // Handling load state of movie details
+            if (movieDetailsLoadState is Resource.Loading) {
                 CircularProgressIndicator()
             }
-            if (viewModel.error != null) {
-                NetworkMessage(error = viewModel.error!!)
+            if (movieDetailsLoadState is Resource.Error) {
+                NetworkMessage(error = movieDetailsLoadState.error!!)
             }
         }
     }

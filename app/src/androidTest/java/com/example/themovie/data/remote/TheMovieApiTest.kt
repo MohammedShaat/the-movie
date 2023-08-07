@@ -70,11 +70,20 @@ class TheMovieApiTest {
     }
 
     @Test
-    fun getMovieDetails_id_returnsMoviesList(): Unit = runBlocking {
+    fun getMovieDetails_id_returnsMovieDetails(): Unit = runBlocking {
         val id = 346698
         val response = api.getMovieDetails(id)
 
         // Assert that movie details are fetched
         assertThat(response.id, equalTo(id))
+    }
+
+    @Test
+    fun getMovieImages_id_returnsMovieImages(): Unit = runBlocking {
+        val id = 346698
+        val response = api.getMovieImages(id)
+
+        // Assert that movie images are fetched
+        assertThat(response.backdrops, not(empty()))
     }
 }

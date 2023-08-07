@@ -1,6 +1,6 @@
 package com.example.themovie.domain.model
 
-import com.example.themovie.data.remote.dto.Genre
+import com.example.themovie.domain.model.sub.Genre
 import java.util.Date
 
 data class MovieDetails(
