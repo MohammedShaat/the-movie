@@ -18,14 +18,20 @@ object DummyObjects {
         movie.copy(id = it)
     }
 
+    val genre = Genre(
+        id = 1,
+        name = "Action"
+    )
+
+    val genres = (1..7).map {
+        genre.copy(id = it)
+    }
+
     val movieDetails = MovieDetails(
         id = 346698,
         adult = true,
         backdropUrl = "",
-        genres = listOf(
-            Genre(1, "Action"),
-            Genre(2, "Drama"),
-        ),
+        genres = genres,
         homepage = "https://www.barbie-themovie.com",
         overview = "Barbie and Ken are having the time of their lives in the colorful and seemingly perfect world of Barbie Land. However, when they get a chance to go to the real world, they soon discover the joys and perils of living among humans.",
         posterUrl = "",

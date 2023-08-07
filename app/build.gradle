@@ -115,4 +115,7 @@ dependencies {
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.3.0")
+
+    // Flow row
+    implementation "com.google.accompanist:accompanist-flowlayout:0.17.0"
 }
