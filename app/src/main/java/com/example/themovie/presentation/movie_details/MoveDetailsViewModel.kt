@@ -41,13 +41,17 @@ class MoveDetailsViewModel @Inject constructor(
             when (result) {
                 is Resource.Success -> {
                     movieDetails = result.data
+                    loading = false
+                    error = null
                 }
 
                 is Resource.Loading -> {
                     loading = true
+                    error = null
                 }
 
                 is Resource.Error -> {
+                    loading = false
                     error = result.error
                 }
             }

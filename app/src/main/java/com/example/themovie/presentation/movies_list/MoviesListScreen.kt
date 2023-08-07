@@ -31,6 +31,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.themovie.R
 import com.example.themovie.domain.model.Movie
+import com.example.themovie.presentation.common.components.NetworkMessage
 import com.example.themovie.presentation.movies_list.components.FAB
 import com.example.themovie.presentation.movies_list.components.MovieItem
 import com.example.themovie.presentation.movies_list.components.MoviesFilterList
@@ -104,15 +105,7 @@ fun MoviesListScreen(
 
             // Error with no data indicator
             if (movies.loadState.refresh is LoadState.Error && movies.itemCount == 0) {
-                val error = (movies.loadState.refresh as LoadState.Error).error
-                Text(
-                    text = if (error is IOException) stringResource(R.string.no_connection)
-                    else stringResource(R.string.unexpected_error),
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.Center
-                    ),
-                )
+                NetworkMessage(error = (movies.loadState.refresh as LoadState.Error).error)
             }
 
             // Scroll up FAB
