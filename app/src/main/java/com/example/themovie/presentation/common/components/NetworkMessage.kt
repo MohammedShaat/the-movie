@@ -17,7 +17,7 @@ fun NetworkMessage(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = if (error is IOException) stringResource(R.string.no_connection)
+        text = if (error is IOException) stringResource(R.string.no_connection_br)
         else stringResource(R.string.unexpected_error),
         style = MaterialTheme.typography.titleMedium.copy(
             color = MaterialTheme.colorScheme.primary,

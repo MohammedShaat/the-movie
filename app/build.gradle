@@ -118,4 +118,8 @@ dependencies {
 
     // Flow row
     implementation "com.google.accompanist:accompanist-flowlayout:0.17.0"
+
+    // Material
+    implementation "androidx.compose.material:material:1.6.0-alpha02"
+
 }

@@ -47,6 +47,7 @@ import com.example.themovie.R
 import com.example.themovie.presentation.common.FullScreenPreview
 import com.example.themovie.presentation.common.components.AsyncImageWithProgressIndicator
 import com.example.themovie.presentation.common.components.NetworkMessage
+import com.example.themovie.presentation.common.components.RetryButton
 import com.example.themovie.presentation.movie_details.components.GenreItem
 import com.example.themovie.presentation.movie_details.components.MovieBackdropItem
 import com.example.themovie.presentation.movie_details.components.MovieDetailsTopAppBar
@@ -60,12 +61,9 @@ import com.google.accompanist.flowlayout.FlowRow
 fun MovieDetailsScreen(
     onNavigateUpClicked: () -> Unit,
     viewModel: MovieDetailsViewModel = hiltViewModel()
-//    movieDetails: MovieDetails = DummyObjects.movieDetails,
 ) {
-    val movieDetailsLoadState by viewModel.movieDetailsFlow.collectAsStateWithLifecycle(Resource.Loading())
-    val movieDetails = movieDetailsLoadState.data
-    val movieImagesLoadState by viewModel.movieImagesFlow.collectAsStateWithLifecycle(Resource.Loading())
-    val movieImages = movieImagesLoadState.data
+    val movieDetails = viewModel.movieDetails
+    val movieImages = viewModel.movieImages
 
     var backdropLoading by remember { mutableStateOf(false) }
     var posterLoading by remember { mutableStateOf(false) }
@@ -87,14 +85,14 @@ fun MovieDetailsScreen(
                     .verticalScroll(rememberScrollState())
             ) {
                 // Movie details
-                movieDetails?.let {
+                movieDetails.data?.let {
                     // Backdrop, poster & title
                     Box(
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         // Backdrop
                         AsyncImageWithProgressIndicator(
-                            model = movieDetails.backdropUrl,
+                            model = movieDetails.data!!.backdropUrl,
                             modifier = Modifier
                                 .align(Alignment.TopCenter)
                                 .fillMaxWidth()
@@ -122,7 +120,7 @@ fun MovieDetailsScreen(
                                     .height(200.dp)
                             ) {
                                 AsyncImageWithProgressIndicator(
-                                    model = movieDetails.posterUrl,
+                                    model = movieDetails.data!!.posterUrl,
                                     modifier = Modifier.fillMaxSize(),
                                     contentDescription = stringResource(R.string.cd_movie_poster),
                                     onState = { state ->
@@ -135,16 +133,16 @@ fun MovieDetailsScreen(
 
                             // Title
                             val uriHandler = LocalUriHandler.current
-                            val titleClickable by remember { mutableStateOf(movieDetails.homepage.isNotBlank()) }
+                            val titleClickable by remember { mutableStateOf(movieDetails.data!!.homepage.isNotBlank()) }
                             Text(
-                                text = movieDetails.title,
+                                text = movieDetails.data!!.title,
                                 style = MaterialTheme.typography.titleLarge.copy(
                                     color = MaterialTheme.colorScheme.onBackground,
                                     textDecoration = if (titleClickable) TextDecoration.Underline else TextDecoration.None
                                 ),
                                 modifier = Modifier
                                     .clickable(enabled = titleClickable) {
-                                        uriHandler.openUri(movieDetails.homepage)
+                                        uriHandler.openUri(movieDetails.data!!.homepage)
                                     }
                             )
                         }
@@ -166,7 +164,7 @@ fun MovieDetailsScreen(
                                 contentDescription = null
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = movieDetails.releaseDate.format)
+                            Text(text = movieDetails.data!!.releaseDate.format)
                         }
 
                         // Time
@@ -176,7 +174,12 @@ fun MovieDetailsScreen(
                                 contentDescription = null
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = stringResource(R.string.movie_time, movieDetails.runtime))
+                            Text(
+                                text = stringResource(
+                                    R.string.movie_time,
+                                    movieDetails.data!!.runtime
+                                )
+                            )
                         }
 
                         // Vote avg
@@ -190,14 +193,14 @@ fun MovieDetailsScreen(
                             Text(
                                 text = stringResource(
                                     R.string.movie_vote_avg,
-                                    movieDetails.voteAverage
+                                    movieDetails.data!!.voteAverage
                                 ),
                                 color = Color.Yellow
                             )
                         }
 
                         // Only adults
-                        if (movieDetails.adult) {
+                        if (movieDetails.data!!.adult) {
                             Row {
                                 Image(
                                     painter = painterResource(R.drawable.ic_adults_only),
@@ -224,7 +227,7 @@ fun MovieDetailsScreen(
                             .padding(horizontal = 16.dp)
                             .fillMaxWidth(),
                     ) {
-                        movieDetails.genres.forEach { genre ->
+                        movieDetails.data!!.genres.forEach { genre ->
                             GenreItem(genre = genre)
                         }
                     }
@@ -240,7 +243,7 @@ fun MovieDetailsScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = movieDetails.overview,
+                        text = movieDetails.data!!.overview,
                         style = MaterialTheme.typography.bodyLarge,
                         maxLines = maxLines,
                         overflow = TextOverflow.Ellipsis,
@@ -266,12 +269,12 @@ fun MovieDetailsScreen(
 
 
                 // Movie images
-                movieImages?.let {
+                movieImages.data?.let {
                     LazyRow(
                         contentPadding = PaddingValues(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        items(movieImages.backdrops) { backdrop ->
+                        items(movieImages.data!!.backdrops) { backdrop ->
                             MovieBackdropItem(backdrop = backdrop)
                         }
                     }
@@ -281,11 +284,19 @@ fun MovieDetailsScreen(
 
 
             // Handling load state of movie details
-            if (movieDetailsLoadState is Resource.Loading) {
+            if (movieDetails is Resource.Loading) {
                 CircularProgressIndicator()
             }
-            if (movieDetailsLoadState is Resource.Error) {
-                NetworkMessage(error = movieDetailsLoadState.error!!)
+            if (movieDetails is Resource.Error) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    NetworkMessage(error = movieDetails.error)
+                    Spacer(modifier = Modifier.height(16.dp))
+                    RetryButton(onClick = { viewModel.onRetry() })
+                }
+
             }
         }
     }

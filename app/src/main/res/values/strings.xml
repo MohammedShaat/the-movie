@@ -8,8 +8,9 @@
     <string name="top_rated">Top Rated</string>
     <string name="upcoming">Upcoming</string>
     <string name="loading">Loading...</string>
-    <string name="no_connection">No connection.\nPlease check your network.</string>
-    <string name="unexpected_error">Unexpected error occured</string>
+    <string name="no_connection_br">No connection.\nPlease check your network.</string>
+    <string name="no_connection">No connection. Please check your network.</string>
+    <string name="unexpected_error">Unexpected error occurred</string>
     <string name="screen_title_details">Details</string>
     <string name="cd_navigate_up">Navigate up</string>
     <string name="cd_movie_icon">Movie icon</string>
@@ -22,4 +23,5 @@
     <string name="read_more">Read more</string>
     <string name="show_less">Show less</string>
     <string name="cd_one_of_movie_backdrops">One of movie backdrops</string>
+    <string name="retry">Retry</string>
 </resources>
