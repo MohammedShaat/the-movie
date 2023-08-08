@@ -31,7 +31,7 @@ class MoviesListViewModel @Inject constructor(
     fun onMovieFilterChanged(newMoviesFilter: MoviesFilter) {
         moviesFilter = newMoviesFilter
         search = ""
-        movies = repo.getMovies(moviesFilter)
+        movies = repo.getMovies(moviesFilter).cachedIn(viewModelScope)
     }
 
     fun onSearchChanged(newQuery: String) {
@@ -40,7 +40,7 @@ class MoviesListViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
-            movies = repo.getMovies(moviesFilter, search)
+            movies = repo.getMovies(moviesFilter, search).cachedIn(viewModelScope)
         }
     }
 }
