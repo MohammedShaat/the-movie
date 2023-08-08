@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.example.themovie.R
 import com.example.themovie.domain.model.Movie
 import com.example.themovie.presentation.common.components.NetworkMessage
@@ -76,7 +77,7 @@ fun MoviesListScreen(
                 contentPadding = PaddingValues(16.dp),
                 columns = GridCells.Adaptive(150.dp)
             ) {
-                items(count = movies.itemCount, key = { movies[it]?.id ?: it }) { index ->
+                items(count = movies.itemCount, key = movies.itemKey { movie -> movie.id }) { index ->
                     val movie = movies[index]
                     if (movie != null) {
                         MovieItem(movie = movie, onClick = onMovieClicked)
