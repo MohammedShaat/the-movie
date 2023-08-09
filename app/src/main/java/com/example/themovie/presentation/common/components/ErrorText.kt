@@ -12,7 +12,7 @@ import com.example.themovie.presentation.ui.theme.TheMovieTheme
 import java.io.IOException
 
 @Composable
-fun NetworkMessage(
+fun ErrorText(
     error: Throwable,
     modifier: Modifier = Modifier
 ) {
@@ -31,6 +31,6 @@ fun NetworkMessage(
 @Composable
 fun NetworkMessagePreview() {
     TheMovieTheme {
-        NetworkMessage(error = IOException())
+        ErrorText(error = IOException())
     }
 }

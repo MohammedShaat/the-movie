@@ -82,7 +82,7 @@ fun MoviesFilterList(
     modifier: Modifier = Modifier
 ) {
     LazyRow(
-        contentPadding = PaddingValues(16.dp),
+        contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = modifier
             .fillMaxWidth()

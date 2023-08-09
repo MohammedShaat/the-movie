@@ -41,12 +41,11 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImagePainter
 import com.example.themovie.R
 import com.example.themovie.presentation.common.FullScreenPreview
 import com.example.themovie.presentation.common.components.AsyncImageWithProgressIndicator
-import com.example.themovie.presentation.common.components.NetworkMessage
+import com.example.themovie.presentation.common.components.ErrorText
 import com.example.themovie.presentation.common.components.RetryButton
 import com.example.themovie.presentation.movie_details.components.GenreItem
 import com.example.themovie.presentation.movie_details.components.MovieBackdropItem
@@ -161,24 +160,30 @@ fun MovieDetailsScreen(
                         Row {
                             Icon(
                                 painter = painterResource(R.drawable.ic_calendar),
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground,
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = movieDetails.data!!.releaseDate.format)
+                            Text(
+                                text = movieDetails.data!!.releaseDate.format,
+                                color = MaterialTheme.colorScheme.onBackground,
+                            )
                         }
 
                         // Time
                         Row {
                             Icon(
                                 painter = painterResource(R.drawable.ic_clock),
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onBackground,
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = stringResource(
                                     R.string.movie_time,
                                     movieDetails.data!!.runtime
-                                )
+                                ),
+                                color = MaterialTheme.colorScheme.onBackground,
                             )
                         }
 
@@ -217,6 +222,7 @@ fun MovieDetailsScreen(
                     Text(
                         text = stringResource(R.string.genres),
                         style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -239,12 +245,14 @@ fun MovieDetailsScreen(
                     Text(
                         text = stringResource(R.string.overview),
                         style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = movieDetails.data!!.overview,
                         style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onBackground,
                         maxLines = maxLines,
                         overflow = TextOverflow.Ellipsis,
                         onTextLayout = { overflowVisible = it.hasVisualOverflow },
@@ -255,7 +263,7 @@ fun MovieDetailsScreen(
                     if (overflowVisible || maxLines == Int.MAX_VALUE) {
                         Text(
                             text = if (overflowVisible) stringResource(R.string.read_more)
-                            else stringResource(R.string.show_less),
+                            else stringResource(R.string.read_less),
                             color = MaterialTheme.colorScheme.secondary,
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
@@ -292,7 +300,7 @@ fun MovieDetailsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    NetworkMessage(error = movieDetails.error)
+                    ErrorText(error = movieDetails.error)
                     Spacer(modifier = Modifier.height(16.dp))
                     RetryButton(onClick = { viewModel.onRetry() })
                 }

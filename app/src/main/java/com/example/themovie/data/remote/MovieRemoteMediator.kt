@@ -58,10 +58,10 @@ class MovieRemoteMediator(
 
             MediatorResult.Success(response.page >= response.totalPages)
         } catch (e: HttpException) {
-            Log.e(GLOBAL_TAG, "Mediator:: HttpException=$e")
+            e.printStackTrace()
             MediatorResult.Error(e)
         } catch (e: IOException) {
-            Log.e(GLOBAL_TAG, "Mediator:: IOException=$e")
+            e.printStackTrace()
             MediatorResult.Error(e)
         }
     }

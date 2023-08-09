@@ -34,7 +34,8 @@ fun MovieDetailsTopAppBar(onNavigateUpClicked: () -> Unit) {
                 text = stringResource(R.string.screen_title_details),
                 style = MaterialTheme.typography.titleLarge.copy(
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onBackground,
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -43,14 +44,16 @@ fun MovieDetailsTopAppBar(onNavigateUpClicked: () -> Unit) {
             IconButton(onClick = onNavigateUpClicked) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.cd_navigate_up)
+                    contentDescription = stringResource(R.string.cd_navigate_up),
+                    tint = MaterialTheme.colorScheme.onBackground,
                 )
             }
         },
         actions = {
             Icon(
                 painter = painterResource(R.drawable.ic_movie),
-                contentDescription = stringResource(R.string.cd_movie_icon)
+                contentDescription = stringResource(R.string.cd_movie_icon),
+                tint = MaterialTheme.colorScheme.onBackground,
             )
             Spacer(modifier = Modifier.width(16.dp))
         },

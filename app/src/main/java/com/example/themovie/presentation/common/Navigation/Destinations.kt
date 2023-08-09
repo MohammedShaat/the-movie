@@ -6,6 +6,12 @@ import com.example.themovie.util.Constants.ARG_MOVIE_ID
 
 interface Destination {
     val route: String
+    companion object {
+        fun getDestination(route: String): Destination {
+            val extractedRoute = route.substringBefore("/")
+            return theMovieDestinations.find { it.route == extractedRoute } ?: MoviesListDestination
+        }
+    }
 }
 
 object MoviesListDestination : Destination {
@@ -19,3 +25,5 @@ object MovieDetailsDestination : Destination {
     )
     val routeWithArgs = "$route/{$ARG_MOVIE_ID}"
 }
+
+val theMovieDestinations = listOf(MoviesListDestination, MovieDetailsDestination)

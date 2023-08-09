@@ -24,6 +24,7 @@ fun RetryButton(
     ) {
         Text(
             text = stringResource(R.string.retry),
+            color = MaterialTheme.colorScheme.onBackground,
         )
     }
 }

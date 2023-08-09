@@ -21,7 +21,7 @@
     <string name="genres">Genres</string>
     <string name="overview">Overview</string>
     <string name="read_more">Read more</string>
-    <string name="show_less">Show less</string>
+    <string name="read_less">Read less</string>
     <string name="cd_one_of_movie_backdrops">One of movie backdrops</string>
     <string name="retry">Retry</string>
 </resources>
