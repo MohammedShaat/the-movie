@@ -14,6 +14,10 @@ interface Destination {
     }
 }
 
+object OnboardingDestination : Destination {
+    override val route = "onboarding"
+}
+
 object MoviesListDestination : Destination {
     override val route = "movies_list"
 }

@@ -1,6 +1,8 @@
 package com.example.themovie.di
 
+import com.example.themovie.data.repository.LaunchStateRepositoryImpl
 import com.example.themovie.data.repository.MovieRepositoryImpl
+import com.example.themovie.domain.repository.LaunchStateRepository
 import com.example.themovie.domain.repository.MovieRepository
 import dagger.Binds
 import dagger.Module
@@ -14,5 +16,13 @@ abstract class AppModuleBinds {
 
     @Binds
     @Singleton
-    abstract fun provideMovieRepository(movieRepositoryImpl: MovieRepositoryImpl): MovieRepository
+    abstract fun provideMovieRepository(
+        movieRepositoryImpl: MovieRepositoryImpl
+    ): MovieRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideLaunchStateRepository(
+        launchStateRepositoryImpl: LaunchStateRepositoryImpl
+    ): LaunchStateRepository
 }
