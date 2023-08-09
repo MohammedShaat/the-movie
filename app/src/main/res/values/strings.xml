@@ -24,4 +24,12 @@
     <string name="read_less">Read less</string>
     <string name="cd_one_of_movie_backdrops">One of movie backdrops</string>
     <string name="retry">Retry</string>
+    <string name="skip">Skip</string>
+    <string name="onboarding_title_1">Welcome to The Movie!</string>
+    <string name="onboarding_description_1">Discover the world of movies – from new releases to classics. Explore now playing, top-rated, upcoming, and popular films. Your cinematic journey starts here with The Movie!</string>
+    <string name="onboarding_title_2">Explore Movie Details</string>
+    <string name="onboarding_description_2">Dive deeper into films you love. Get quick access to genres, overview, rate, release date, and pictures. The Movie enriches your movie experience!</string>
+    <string name="start">Start</string>
+    <string name="next">Next</string>
+
 </resources>
