@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">The Movie</string>
+    <string name="cd_for_adults">Adults Only</string>
+    <string name="placeholder_search_here">Search here</string>
+    <string name="cd_scroll_up">Scroll up</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="loading">Loading...</string>
+    <string name="no_connection_br">No connection.\nPlease check your network.</string>
+    <string name="no_connection">No connection. Please check your network.</string>
+    <string name="unexpected_error">Unexpected error occurred</string>
+    <string name="screen_title_details">Details</string>
+    <string name="cd_navigate_up">Navigate up</string>
+    <string name="cd_movie_icon">Movie icon</string>
+    <string name="cd_movie_backdrop">Movie backdrop</string>
+    <string name="cd_movie_poster">Movie poster</string>
+    <string name="movie_time">%d min</string>
+    <string name="movie_vote_avg">%.1f</string>
+    <string name="genres">Genres</string>
+    <string name="overview">Overview</string>
+    <string name="read_more">Read more</string>
+    <string name="read_less">Read less</string>
+    <string name="cd_one_of_movie_backdrops">One of movie backdrops</string>
+    <string name="retry">Retry</string>
+    <string name="skip">Skip</string>
+    <string name="onboarding_title_1">Welcome to The Movie!</string>
+    <string name="onboarding_description_1">Discover the world of movies – from new releases to classics. Explore now playing, top-rated, upcoming, and popular films.!</string>
+    <string name="onboarding_title_2">Explore Movie Details</string>
+    <string name="onboarding_description_2">Dive deeper into films you love. Get quick access to genres, overview, rate, release date, and pictures.</string>
+    <string name="start">Start</string>
+    <string name="next">Next</string>
+
 </resources>
