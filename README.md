@@ -1,10 +1,10 @@
 # The Movie ![app icon](/docs/logo.png)
 
-**The Movie** app displays movies according to a specific category, including (now playing, upcomming, ...etc). The user can search and explore details of a movie.
+**The Movie** app displays movies according to a specific category, including (now playing, upcoming, ...etc). The user can search and explore the details of a movie.
 
 
 ## Core Technologies:
-* MVVVM with Clean Architecture
+* MVVM with Clean Architecture
 * Room
 * Retrofit & Okhtttp
 * DataStore
