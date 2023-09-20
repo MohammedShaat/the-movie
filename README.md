@@ -15,7 +15,7 @@
 
 
 ## Installation
-* [apk](/docs/app-release.apk)
+* [apk](https://drive.google.com/file/d/1GwkgiVNVsS9wqGuJS6L8oQ_UN9RY_HPl/view?usp=sharing)
 * Google Play (soon)<br/>
 
 
